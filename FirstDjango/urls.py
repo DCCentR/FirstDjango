@@ -20,10 +20,6 @@ from MainApp import views
 urlpatterns = [
     path('', views.home),
     path('about', views.about),
-    path('item/1', views.item_1),
-    path('item/2', views.item_2),
-    path('item/5', views.item_5),
-    path('item/7', views.item_7),
-    path('item/8', views.item_8),
+    path('item/<int:item_id>/', views.item),
+    path('items/', views.items_list),
 ]
-:while:wgit
