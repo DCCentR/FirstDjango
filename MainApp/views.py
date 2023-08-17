@@ -15,11 +15,14 @@ def home(request):
     return render(request, "index.html", context)
 
 def about(request):
-    text =  """ <p>Имя: <b>Андрей</b></p>
+    text =  """ / <a href="/">Home</a> / <a href="/items">Items</a> / <a href="/about">About</a> /
+                <p>Имя: <b>Андрей</b></p>
                 <p>Отчество: <b>Александрович</b></p>
                 <p>Фамилия: <b>Горюнов</b></p>
                 <p>Телефон: <b>8-977-777-77-77</b></p>
                 <p>Email: <b>bibaboba@gmail.com</b></p>
+
+                <p><a href="/">&larr; назад на главную</a></p>
             """
     return HttpResponse(text)
 
@@ -32,9 +35,16 @@ items = [
 ]
 
 def item(request, item_id):
+    # for item in items:
+    #     if item['id'] == int(item_id):
+    #         return HttpResponse(f"<p>Название: {item['name']}</p><p>Количество: {item['quantity']}</p><p><a href=\"/items\">назад к списку товаров</a></p>")
+    # return HttpResponse(f"Товар с id={item_id} не найден")
     for item in items:
         if item['id'] == int(item_id):
-            return HttpResponse(f"<p>Название: {item['name']}</p><p>Количество: {item['quantity']}</p><p><a href=\"/items\">назад к списку товаров</a></p>")
+            context = {
+                "item": item
+            }
+            return render(request, "item.html", context)
     return HttpResponse(f"Товар с id={item_id} не найден")
 
 def items_list(request):
