@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from MainApp.models import Item
 
 # Create your views here.
 
@@ -26,34 +28,43 @@ def about(request):
             """
     return HttpResponse(text)
 
-items = [
-   {"id": 1, "name": "Кроссовки abibas" ,"quantity":5},
-   {"id": 2, "name": "Куртка кожаная" ,"quantity":2},
-   {"id": 5, "name": "Coca-cola 1 литр" ,"quantity":12},
-   {"id": 7, "name": "Картофель фри" ,"quantity":0},
-   {"id": 8, "name": "Кепка" ,"quantity":124},
-]
+# items = [
+#    {"id": 1, "name": "Кроссовки abibas" ,"quantity":5},
+#    {"id": 2, "name": "Куртка кожаная" ,"quantity":2},
+#    {"id": 5, "name": "Coca-cola 1 литр" ,"quantity":12},
+#    {"id": 7, "name": "Картофель фри" ,"quantity":0},
+#    {"id": 8, "name": "Кепка" ,"quantity":124},
+# ]
 
 def item(request, item_id):
     # for item in items:
     #     if item['id'] == int(item_id):
     #         return HttpResponse(f"<p>Название: {item['name']}</p><p>Количество: {item['quantity']}</p><p><a href=\"/items\">назад к списку товаров</a></p>")
     # return HttpResponse(f"Товар с id={item_id} не найден")
-    for item in items:
-        if item['id'] == int(item_id):
-            context = {
-                "item": item
-            }
-            return render(request, "item.html", context)
-    return HttpResponse(f"Товар с id={item_id} не найден")
+
+    # for item in items:
+    #     if item['id'] == int(item_id):
+    #         context = {
+    #             "item": item
+    #         }
+    #         return render(request, "item.html", context)
+    # return HttpResponse(f"Товар с id={item_id} не найден")
+    item = get_object_or_404(Item, id=item_id)
+    context = {
+        "item": item
+    }
+    return render(request, "item.html", context)
 
 def items_list(request):
+    items = Item.objects.all()
+    return render(request, 'items_list.html', {'items': items})
     # items_html = "<h2>Список товаров</h2><ol>"
     # for index, item in enumerate(items):
     #     items_html += f"<li><a href=\"/item/{item['id']}\">{item['name']}</a></li>"
     # items_html += "</ol>"
     # return HttpResponse(items_html)
-    context = {
-        "items": items
-    }
-    return render(request, "items_list.html", context)
+
+    # context = {
+    #     "items": items
+    # }
+    # return render(request, "items_list.html", context)
